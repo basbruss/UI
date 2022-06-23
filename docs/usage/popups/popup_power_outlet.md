@@ -26,6 +26,11 @@ This popup is displayed using ``hold_action`` and it is compatible with the foll
 - card_input_boolean
 - card_battery
 
+!!! Warning "Warning"
+
+    The popup is not compatible with the custom_actions!
+    The hold_action only works on the outer layer!
+
 ##### Variables
 
 <table>
