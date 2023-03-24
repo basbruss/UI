@@ -259,6 +259,8 @@ popup_media_player_infos:
               type: "custom:button-card"
               template: "popup_button_source"
               entity: "[[[ return entity.entity_id; ]]]"
+              variables:
+                ulm_card_media_player_source_list: "[[[ return variables?.ulm_card_media_player_source_list; ]]]"
     content2:
       card:
         type: "custom:my-slider-v2"
@@ -310,15 +312,17 @@ popup_media_player_infos:
                 'template': 'popup_media_player_row',
                 'entity': entity.entity_id,
                 'variables': {
-                  'ulm_popup_media_entity_idx': index
+                  'ulm_popup_media_entity_idx': index,
+                  'ulm_card_media_player_source_list': variables?.ulm_card_media_player_source_list
                 }
               };
               return row;
             }
-
-            let source_list = entity.attributes?.source_list;
-
-            let length_list = source_list?.length
+            let sonos = states[variables?.ulm_card_media_player_source_list]?.attributes.items
+            let sonos_value = Object.values(sonos || {})
+            console.log(variables.ulm_card_media_player_source_list)
+            let source_list = variables?.ulm_card_media_player_source_list ? sonos_value : entity.attributes?.source_list
+            let length_list = source_list?.length;
             let index = 0;
             for (let source in source_list){
               rows.push(generate_source_items(index));

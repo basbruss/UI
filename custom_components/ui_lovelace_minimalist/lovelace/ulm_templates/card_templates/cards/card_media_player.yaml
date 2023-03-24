@@ -17,6 +17,7 @@ card_media_player:
     ulm_card_media_player_enable_popup: false
     ulm_card_media_player_more_info: false
     ulm_card_media_player_power_button: false
+    ulm_card_media_player_source_list: false
   triggers_update: "all"
   show_icon: false
   show_name: false
@@ -149,7 +150,8 @@ card_media_player:
                   let vars = variables;
                   if(variables.ulm_card_media_player_enable_popup) {
                     vars.ulm_custom_popup = {
-                      'template': 'popup_media_player_infos'
+                      'template': 'popup_media_player_infos',
+                      'popup_variables': {'ulm_card_media_player_source_list': variables.ulm_card_media_player_source_list}
                     };
                   }
                   return vars;
@@ -200,7 +202,8 @@ card_media_player:
                   let vars = variables;
                   if(variables.ulm_card_media_player_enable_popup) {
                     vars.ulm_custom_popup = {
-                      'template': 'popup_media_player_infos'
+                      'template': 'popup_media_player_infos',
+                      'popup_variables': {'ulm_card_media_player_source_list': variables.ulm_card_media_player_source_list}
                     };
                   }
                   return vars;
@@ -451,7 +454,7 @@ card_media_player:
               tap_action:
                 action: >
                   [[[
-                      return variables.ulm_card_media_player_enable_popup && entity.attributes?.source_list ? "fire-dom-event" : "more-info";
+                      return variables.ulm_card_media_player_enable_popup && (entity.attributes?.source_list || variables?.ulm_card_media_player_source_list) ? "fire-dom-event" : "more-info";
                   ]]]
                 browser_mod:
                   service: "browser_mod.popup"
@@ -480,6 +483,8 @@ card_media_player:
                       type: "custom:button-card"
                       template: "popup_media_player_source_card"
                       entity: "[[[ return entity.entity_id; ]]]"
+                      variables:
+                        ulm_card_media_player_source_list: "[[[ return variables?.ulm_card_media_player_source_list; ]]]"
     item3:
       card:
         type: "custom:my-slider"
@@ -540,6 +545,8 @@ card_media_player:
                       type: "custom:button-card"
                       template: "popup_media_player_infos"
                       entity: "[[[ return entity.entity_id; ]]]"
+                      variables:
+                        ulm_card_media_player_source_list: "[[[ return variables?.ulm_card_media_player_source_list; ]]]"
               tap_action:
                 action: "call-service"
                 service: "media_player.volume_mute"
@@ -581,6 +588,8 @@ card_media_player:
                       type: "custom:button-card"
                       template: "popup_media_player_infos"
                       entity: "[[[ return entity.entity_id; ]]]"
+                      variables:
+                        ulm_card_media_player_source_list: "[[[ return variables?.ulm_card_media_player_source_list; ]]]"
               tap_action:
                 action: "call-service"
                 service: "media_player.volume_set"

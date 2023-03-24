@@ -3,12 +3,22 @@ popup_media_player_row:
   template: "popup_row_layout"
   name: >
     [[[
-      var name = entity.attributes.source_list[variables.ulm_popup_media_entity_idx];
-      return name;
+      let index = variables.ulm_popup_media_entity_idx
+      if(variables.ulm_card_media_player_source_list){
+        return Object.values(states[variables?.ulm_card_media_player_source_list]?.attributes.items)[index]
+      }
+      return entity.attributes?.source_list[index];
     ]]]
   state:
     - operator: "template"
-      value: "[[[ return entity.attributes.source == entity.attributes.source_list[variables.ulm_popup_media_entity_idx]; ]]]"
+      value: >
+        [[[
+          let index = variables.ulm_popup_media_entity_idx
+          if(variables.ulm_card_media_player_source_list){
+            return entity?.attributes.media_channel == Object.values(states[variables?.ulm_card_media_player_source_list]?.attributes.items)[index]
+          }
+          return entity.attributes.source == entity.attributes.source_list[index];
+        ]]]
       styles:
         card:
           - background-color: "rgba(var(--color-blue),0.1)"
@@ -17,7 +27,26 @@ popup_media_player_row:
           - color: "rgba(var(--color-blue),1)"
   tap_action:
     action: "call-service"
-    service: "media_player.select_source"
+    service: "[[[return variables.ulm_card_media_player_source_list ? 'media_player.play_media' : 'media_player.select_source']]]"
     service_data:
       entity_id: "[[[ return entity.entity_id; ]]]"
-      source: "[[[ return entity.attributes.source_list[variables.ulm_popup_media_entity_idx]; ]]]"
+      source: >
+        [[[
+          if(!variables.ulm_card_media_player_source_list){
+            return entity?.attributes.source_list[variables.ulm_popup_media_entity_idx]
+          }
+        ]]]
+      media_content_type: >
+        [[[
+          let index = variables?.ulm_popup_media_entity_idx
+          if(variables.ulm_card_media_player_source_list){
+            return Object.values(states[variables?.ulm_card_media_player_source_list]?.attributes.items)[index];
+          }
+        ]]]
+      media_content_id: >
+        [[[
+          let index = variables?.ulm_popup_media_entity_idx
+          if(variables.ulm_card_media_player_source_list){
+            return Object.keys(states[variables?.ulm_card_media_player_source_list]?.attributes.items)[index];
+          }
+        ]]]

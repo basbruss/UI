@@ -69,6 +69,8 @@ popup_media_player_source:
                       type: "custom:button-card"
                       template: "popup_media_player_infos"
                       entity: "[[[ return entity.entity_id; ]]]"
+                      variables:
+                        ulm_card_media_player_source_list: "[[[ return variables?.ulm_card_media_player_source_list ]]]"
           item2:
             card:
               type: "custom:button-card"
@@ -103,3 +105,5 @@ popup_media_player_source:
                       type: "custom:button-card"
                       template: "popup_media_player_volume"
                       entity: "[[[ return entity.entity_id; ]]]"
+                      variables:
+                        ulm_card_media_player_source_list: "[[[ return variables?.ulm_card_media_player_source_list; ]]]"

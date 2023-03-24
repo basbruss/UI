@@ -1,6 +1,8 @@
 ---
 popup_media_player_source_card:
   template: "popup_media_player_source"
+  variables:
+    ulm_card_media_player_source_list: "[[[ return variables?.ulm_card_media_player_source_list ]]]"
   custom_fields:
     footer:
       card:
